@@ -75,7 +75,6 @@ const options: AuthOptions = {
         });
 
         const resp = await response.json();
-        console.log(resp);
         if (resp.message === "Unauthenticated.") {
           signOut();
           return;
