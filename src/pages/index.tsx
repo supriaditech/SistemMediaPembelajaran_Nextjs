@@ -14,6 +14,8 @@ import {
 import { UserType } from "../../types/userType";
 import { formatDate } from "../../utils/dateFormatter";
 import ModalAddUser from "@/components/beranda/ModalAddUser";
+import ModalEditUser from "@/components/beranda/ModalEditUser";
+import ModalDeleteUser from "@/components/beranda/ModalDeleteUser";
 
 interface HomeProps {
   title: string;
@@ -42,6 +44,7 @@ export default function Home({ title, session, token }: HomeProps) {
     currentData,
     handlePageChange,
     currentPage,
+    onEditSubmit,
   } = useTambahUser(token);
 
   if (error) {
@@ -60,7 +63,6 @@ export default function Home({ title, session, token }: HomeProps) {
   const handleDelete = (id: number) => {
     setIdUser(id);
     setOpenModalDelete(true);
-    console.log(`Delete User with ID ${id}`);
   };
 
   // Function to format date
@@ -87,7 +89,7 @@ export default function Home({ title, session, token }: HomeProps) {
               <div className="w-96">
                 <Input
                   crossOrigin={undefined}
-                  label="Cari Karyawan..."
+                  label="Cari User..."
                   className="w-76"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -98,7 +100,7 @@ export default function Home({ title, session, token }: HomeProps) {
                 className="mr-2 bg-buttonGreen w-60"
                 onClick={() => setOpenModal(true)}
               >
-                Tambah Karyawan
+                Tambah User
               </Button>
             </div>
           </div>
@@ -239,6 +241,37 @@ export default function Home({ title, session, token }: HomeProps) {
         className="flex-row justify-center item-center"
       >
         <ModalAddUser token={token} onClose={() => setOpenModal(false)} />
+      </Dialog>
+      <Dialog
+        open={openModalEdit}
+        handler={() => setOpenModalEdit(!openModalEdit)}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className="flex-row justify-center item-center"
+      >
+        <ModalEditUser
+          token={token}
+          user={selectedUser}
+          onClose={() => setOpenModalEdit(false)}
+          onSubmit={onEditSubmit}
+        />
+      </Dialog>
+      <Dialog
+        open={openModalDelete}
+        handler={() => setOpenModalDelete(!openModalDelete)}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className="flex-row justify-center item-center"
+      >
+        <ModalDeleteUser
+          token={token}
+          onClose={() => setOpenModalDelete(false)}
+          userId={idUser}
+        />
       </Dialog>
     </Master>
   );

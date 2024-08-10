@@ -68,15 +68,15 @@ const useTambahUser = (token: string) => {
 
       const response = await api.call();
       if (response.meta.statusCode === 200) {
-        toast.success("Karyawan berhasil ditambahkan!", { autoClose: 3000 });
+        toast.success("User berhasil ditambahkan!", { autoClose: 3000 });
         setOpenModal(false); // Close the modal only on success
         mutate(); // Refresh data
         return { success: true };
       } else {
-        throw new Error(response.message || "Gagal menambahkan karyawan");
+        throw new Error(response.message || "Gagal menambahkan User");
       }
     } catch (error: any) {
-      toast.error("Terjadi kesalahan saat menambahkan karyawan.", {
+      toast.error("Terjadi kesalahan saat menambahkan User.", {
         autoClose: 3000,
       });
       return { success: false, error: error.message };
@@ -84,6 +84,68 @@ const useTambahUser = (token: string) => {
       setIsLoading(false);
     }
   };
+
+  const onEditSubmit: SubmitHandler<UserType> = async (data) => {
+    console.log(data);
+
+    setIsLoading(true);
+    try {
+      const api = new Api();
+      api.url = "/user/update";
+      api.auth = true;
+      api.token = token;
+      api.body = {
+        ...data,
+      };
+
+      const response = await api.call();
+      if (response.meta.statusCode === 200) {
+        toast.success("user berhasil diperbarui!", { autoClose: 3000 });
+        setOpenModalEdit(false); // Close the modal only on success
+        mutate(); // Refresh data
+        return { success: true };
+      } else {
+        throw new Error(response.message || "Gagal memperbarui user");
+      }
+    } catch (error: any) {
+      toast.error("Terjadi kesalahan saat memperbarui user.", {
+        autoClose: 3000,
+      });
+      return { success: false, error: error.message };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const deleteUser = async (id: number) => {
+    setIsLoading(false);
+    try {
+      const api = new Api();
+      api.url = "/user/delete";
+      api.auth = true;
+      api.token = token;
+      api.body = { id: id };
+      const response = await api.call();
+      console.log(response);
+      console.log(api.body);
+      if (response.meta.statusCode === 200) {
+        toast.success("User berhasil dihapus!", { autoClose: 3000 });
+        setOpenModalDelete(false); // Close the modal only on success
+        mutate(); // Refresh data
+        return { success: true };
+      } else {
+        throw new Error(response.message || "Gagal menghapus data User");
+      }
+    } catch (error: any) {
+      toast.error("Terjadi kesalahan saat menghapus data User.", {
+        autoClose: 3000,
+      });
+      return { success: false, error: error.message };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     data,
     error,
@@ -110,6 +172,8 @@ const useTambahUser = (token: string) => {
     onSubmit,
     errors,
     loading,
+    onEditSubmit,
+    deleteUser,
   };
 };
 
