@@ -8,6 +8,7 @@ export interface UserType {
   userId: string;
   password: string;
   name: string;
+  phoneNumber: string;
   role: "ADMIN" | "GURU" | "MURID";
   createdAt: string;
   updatedAt: string;
@@ -19,4 +20,12 @@ export interface UserType {
 export interface ApiUserType {
   meta: Meta;
   data: UserType[];
+}
+
+export interface AddUserType {
+  userId: string;
+  password: string;
+  name: string;
+  phoneNumber: string;
+  role: string;
 }

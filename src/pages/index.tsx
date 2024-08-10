@@ -7,11 +7,13 @@ import {
   Button,
   Card,
   CardBody,
+  Dialog,
   Input,
   Typography,
 } from "@material-tailwind/react";
 import { UserType } from "../../types/userType";
 import { formatDate } from "../../utils/dateFormatter";
+import ModalAddUser from "@/components/beranda/ModalAddUser";
 
 interface HomeProps {
   title: string;
@@ -63,7 +65,15 @@ export default function Home({ title, session, token }: HomeProps) {
 
   // Function to format date
 
-  const TABLE_HEAD = ["No", "User Id", "Name", "Role", "Create At", "Action"];
+  const TABLE_HEAD = [
+    "No",
+    "User Id",
+    "Name",
+    "Phone Number",
+    "Role",
+    "Create At",
+    "Action",
+  ];
 
   return (
     <Master title={title}>
@@ -153,6 +163,15 @@ export default function Home({ title, session, token }: HomeProps) {
                         color="blue-gray"
                         className="font-normal text-center"
                       >
+                        {user.phoneNumber}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal text-center"
+                      >
                         {user.role}
                       </Typography>
                     </td>
@@ -210,6 +229,17 @@ export default function Home({ title, session, token }: HomeProps) {
           </div>
         </CardBody>
       </Card>
+      <Dialog
+        open={openModal}
+        handler={() => setOpenModal(!openModal)}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className="flex-row justify-center item-center"
+      >
+        <ModalAddUser token={token} onClose={() => setOpenModal(false)} />
+      </Dialog>
     </Master>
   );
 }
@@ -232,13 +262,16 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
 
   let title = "Beranda"; // Default title
 
-  if (session.user.role === "ADMIN") {
+  if (session?.user?.role === "ADMIN") {
     title = "Halaman Tambah User";
-  } else if (session.user.role === "GURU" || session.user.role === "MURID") {
+  } else if (
+    session?.user?.role === "GURU" ||
+    session?.user?.role === "MURID"
+  ) {
     title = "Beranda";
   }
 
-  const token = session.accessToken;
+  const token = session?.accessToken;
   return {
     props: {
       title,

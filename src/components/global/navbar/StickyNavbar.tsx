@@ -13,9 +13,10 @@ import Image from "next/image";
 import { HiOutlineUser } from "react-icons/hi";
 import { BiListUl } from "react-icons/bi";
 import { MdLogout } from "react-icons/md";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { SessionType } from "../../../../types/sessionType";
+import { toast } from "react-toastify";
 
 interface StickyNavbarProps {
   title: string;
@@ -50,9 +51,12 @@ export const StickyNavbar = () => {
     setMenuOpen((prev) => !prev);
   };
 
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/" });
+  };
   // Determine nav items based on user role
   const navItems = () => {
-    switch (session?.user.role) {
+    switch (session?.user?.role) {
       case "ADMIN":
         return [
           { id: "TambahUser", label: "Tambah User", path: "/tambah-user" },
@@ -156,13 +160,23 @@ export const StickyNavbar = () => {
                     <li
                       role="menuitem"
                       className="flex w-full cursor-pointer select-none gap-2 items-center rounded-md px-2 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-red-700 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900 text-red-500"
-                      // onClick={() =>
-                      //   toast.promise(logOut, {
-                      //     success: "Logged out. Redirecting...",
-                      //     pending: "Logging out...",
-                      //     error: "Log out failed.",
-                      //   })
-                      // }
+                      onClick={() =>
+                        toast.promise(
+                          new Promise<void>((resolve, reject) => {
+                            try {
+                              handleLogout();
+                              resolve();
+                            } catch (error) {
+                              reject(error);
+                            }
+                          }),
+                          {
+                            success: "Logged out. Redirecting...",
+                            pending: "Logging out...",
+                            error: "Log out failed.",
+                          }
+                        )
+                      }
                     >
                       <MdLogout className="w-6 h-6 text-red-500" /> Logout
                     </li>
