@@ -7,11 +7,15 @@ import {
   Button,
   Card,
   CardBody,
+  Dialog,
   Input,
   Typography,
 } from "@material-tailwind/react";
 import { UserType } from "../../types/userType";
 import { formatDate } from "../../utils/dateFormatter";
+import ModalAddUser from "@/components/beranda/ModalAddUser";
+import ModalEditUser from "@/components/beranda/ModalEditUser";
+import ModalDeleteUser from "@/components/beranda/ModalDeleteUser";
 
 interface HomeProps {
   title: string;
@@ -40,6 +44,7 @@ export default function Home({ title, session, token }: HomeProps) {
     currentData,
     handlePageChange,
     currentPage,
+    onEditSubmit,
   } = useTambahUser(token);
 
   if (error) {
@@ -58,12 +63,19 @@ export default function Home({ title, session, token }: HomeProps) {
   const handleDelete = (id: number) => {
     setIdUser(id);
     setOpenModalDelete(true);
-    console.log(`Delete User with ID ${id}`);
   };
 
   // Function to format date
 
-  const TABLE_HEAD = ["No", "User Id", "Name", "Role", "Create At", "Action"];
+  const TABLE_HEAD = [
+    "No",
+    "User Id",
+    "Name",
+    "Phone Number",
+    "Role",
+    "Create At",
+    "Action",
+  ];
 
   return (
     <Master title={title}>
@@ -77,7 +89,7 @@ export default function Home({ title, session, token }: HomeProps) {
               <div className="w-96">
                 <Input
                   crossOrigin={undefined}
-                  label="Cari Karyawan..."
+                  label="Cari User..."
                   className="w-76"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -88,7 +100,7 @@ export default function Home({ title, session, token }: HomeProps) {
                 className="mr-2 bg-buttonGreen w-60"
                 onClick={() => setOpenModal(true)}
               >
-                Tambah Karyawan
+                Tambah User
               </Button>
             </div>
           </div>
@@ -145,6 +157,15 @@ export default function Home({ title, session, token }: HomeProps) {
                         className="font-normal text-center"
                       >
                         {user.name}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal text-center"
+                      >
+                        {user.phoneNumber}
                       </Typography>
                     </td>
                     <td className={classes}>
@@ -210,6 +231,48 @@ export default function Home({ title, session, token }: HomeProps) {
           </div>
         </CardBody>
       </Card>
+      <Dialog
+        open={openModal}
+        handler={() => setOpenModal(!openModal)}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className="flex-row justify-center item-center"
+      >
+        <ModalAddUser token={token} onClose={() => setOpenModal(false)} />
+      </Dialog>
+      <Dialog
+        open={openModalEdit}
+        handler={() => setOpenModalEdit(!openModalEdit)}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className="flex-row justify-center item-center"
+      >
+        <ModalEditUser
+          token={token}
+          user={selectedUser}
+          onClose={() => setOpenModalEdit(false)}
+          onSubmit={onEditSubmit}
+        />
+      </Dialog>
+      <Dialog
+        open={openModalDelete}
+        handler={() => setOpenModalDelete(!openModalDelete)}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className="flex-row justify-center item-center"
+      >
+        <ModalDeleteUser
+          token={token}
+          onClose={() => setOpenModalDelete(false)}
+          userId={idUser}
+        />
+      </Dialog>
     </Master>
   );
 }
@@ -232,13 +295,16 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
 
   let title = "Beranda"; // Default title
 
-  if (session.user.role === "ADMIN") {
+  if (session?.user?.role === "ADMIN") {
     title = "Halaman Tambah User";
-  } else if (session.user.role === "GURU" || session.user.role === "MURID") {
+  } else if (
+    session?.user?.role === "GURU" ||
+    session?.user?.role === "MURID"
+  ) {
     title = "Beranda";
   }
 
-  const token = session.accessToken;
+  const token = session?.accessToken;
   return {
     props: {
       title,
