@@ -48,7 +48,6 @@ export default function Home({ title, session, token, userType }: HomeProps) {
     currentPage,
     onEditSubmit,
   } = useTambahUser(token);
-  console.log(userType);
   if (error) {
     return <div>Error loading data</div>;
   }

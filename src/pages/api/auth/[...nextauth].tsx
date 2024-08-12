@@ -29,7 +29,6 @@ const options: AuthOptions = {
         });
 
         const user = await response.json();
-        console.log("API Login Response:", user);
 
         if (response.ok && user.meta.statusCode === 200) {
           // Filter out the password from the user object
@@ -100,7 +99,6 @@ const options: AuthOptions = {
           signOut();
           return;
         }
-
         session.user = {
           ...session.user,
           Admin: resp.data.Admin ?? session.user.Admin,
@@ -111,7 +109,6 @@ const options: AuthOptions = {
         console.error(e);
       }
 
-      console.log("Session Data:", session);
       return session;
     },
   },

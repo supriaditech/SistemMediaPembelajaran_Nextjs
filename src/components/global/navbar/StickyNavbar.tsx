@@ -17,6 +17,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { SessionType } from "../../../../types/sessionType";
 import { toast } from "react-toastify";
+import { ApiUrl } from "../../../../config/config";
 
 interface StickyNavbarProps {
   title: string;
@@ -29,7 +30,10 @@ export const StickyNavbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const { data: session } = useSession() as { data: SessionType | null };
-
+  let photoProfile
+  if(session?.user.Guru?.photo){
+    photoProfile = ApiUrl + "/"+session?.user.Guru?.photo
+  }
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 960) {
@@ -116,15 +120,16 @@ export const StickyNavbar = () => {
       >
         <Typography
           as="a"
-          href={`/${locale}/`}
+          href={`/`}
           className="mr-4 cursor-pointer py-1.5 font-medium "
         >
           <Image
-            src="/img/navbar/logo.png"
+            src="/img/Logo.png"
             alt="Logo"
             width={180}
             height={48}
             priority
+
           />
         </Typography>
         <div className="lg:flex mr-4 hidden ">{navList}</div>
@@ -132,8 +137,13 @@ export const StickyNavbar = () => {
           <div className="flex items-center gap-x-1">
             {session?.user ? (
               <div className="relative flex justify-center items-center ml-2">
-                <button className="ml-2" onClick={toggleMenu}>
-                  {session.user.name}
+                <button className="ml-2 flex justify-center items-center gap-4" onClick={toggleMenu}>
+                    {photoProfile ? (
+                      <Image src={photoProfile} width={20} height={20} alt="Profile Picture" className="rounded-full"/>
+                    ) : (
+                      <HiOutlineUser className="w-6 h-6" /> // Icon pengguna default jika photoProfile tidak ada
+                    )}
+                    {session?.user?.name}
                 </button>
                 {isMenuOpen && (
                   <ul

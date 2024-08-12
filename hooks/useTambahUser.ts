@@ -21,7 +21,6 @@ const useTambahUser = (token: string) => {
     Error
   >(["/user/all", token], fetcher.bind(null, "/user/all", token));
 
-  console.log(data);
   // hook form
   const {
     register,
@@ -87,7 +86,6 @@ const useTambahUser = (token: string) => {
   };
 
   const onEditSubmit: SubmitHandler<UserType> = async (data) => {
-    console.log(data);
 
     setIsLoading(true);
     try {
@@ -127,8 +125,6 @@ const useTambahUser = (token: string) => {
       api.token = token;
       api.body = { id: id };
       const response = await api.call();
-      console.log(response);
-      console.log(api.body);
       if (response.meta.statusCode === 200) {
         toast.success("User berhasil dihapus!", { autoClose: 3000 });
         setOpenModalDelete(false); // Close the modal only on success

@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { Dialog, Button } from "@material-tailwind/react";
-import { toast } from "react-toastify";
+import Image from "next/image";
+import { Button } from "@material-tailwind/react";
+import { toast, ToastContainer } from "react-toastify";
 import { usePhotoProfile } from "../../../../../hooks/usePhotoProfile";
 
-function AddPhotoProfile({ token, guruId }) {
-  const { modalPhotoProfile, setPhotoProfile, uploadPhoto, loading } =
-    usePhotoProfile(token);
+interface AddPhotoProfileProps {
+  token: string;
+  guruId: any;
+}
+
+const AddPhotoProfile: React.FC<AddPhotoProfileProps> = ({ token, guruId }) => {
+  const { uploadPhoto, loading } = usePhotoProfile(token);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file)); // Generate preview URL for the selected file
     }
   };
 
@@ -23,45 +31,64 @@ function AddPhotoProfile({ token, guruId }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center py-20">
       <h2 className="text-2xl font-bold mb-5 text-center">
         Make an awesome profile picture from{" "}
         <span className="text-blue-500">any</span> photo
       </h2>
-      <div className="flex flex-col items-center">
-        <Button
-          className="rounded-full bg-green-500 p-6 text-white text-2xl"
-          onClick={() => setPhotoProfile(true)}
-        >
-          +
-        </Button>
-        <p className="mt-4 text-gray-600">Upload your photo</p>
+
+      <div className="relative w-32 h-32 mb-4">
+        <div className="relative rounded-full w-full h-full overflow-hidden bg-gray-500">
+          {previewUrl && (
+            <Image
+              src={previewUrl}
+              alt="Preview"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-full"
+            />
+          )}
+        </div>
+        <input
+          type="file"
+          id="file-upload"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        <label htmlFor="file-upload">
+          <p
+            className="absolute bottom-2 right-5 transform translate-y-1/2 translate-x-1/2 rounded-full bg-green-500 w-10 h-10 text-white text-2xl flex items-center justify-center"
+            style={{ zIndex: 10 }}
+          >
+            +
+          </p>
+        </label>
       </div>
 
-      <Dialog open={modalPhotoProfile} handler={setPhotoProfile}>
-        <div className="p-4">
-          <h3 className="text-lg font-bold">Upload Photo Profile</h3>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="mt-4 p-2 border border-gray-300 rounded"
-          />
-          <div className="mt-4 flex justify-end space-x-2">
-            <Button color="red" onClick={() => setPhotoProfile(false)}>
-              Cancel
-            </Button>
-            <Button
-              color="green"
-              onClick={handleUpload}
-              disabled={loading || !selectedFile}
-            >
-              {loading ? "Uploading..." : "Upload"}
-            </Button>
-          </div>
-        </div>
-      </Dialog>
+      <p className="mt-4 text-gray-600">Upload your photo</p>
+
+      <div className="mt-4 flex justify-end space-x-2">
+        <Button
+          color="green"
+          onClick={handleUpload}
+          disabled={loading || !selectedFile}
+        >
+          {loading ? "Uploading..." : "Upload"}
+        </Button>
+      </div>
+       <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
     </div>
   );
-}
+};
 
 export default AddPhotoProfile;
