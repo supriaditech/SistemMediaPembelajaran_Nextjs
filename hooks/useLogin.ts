@@ -30,7 +30,6 @@ const useLogin = () => {
         password: data.password,
         callbackUrl: "/",
       });
-      console.log(signInResponse);
       if (!signInResponse) {
         throw new Error("No response from server");
       }

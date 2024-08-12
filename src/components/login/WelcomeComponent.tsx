@@ -18,20 +18,3 @@ function WelcomeComponent() {
 }
 
 export default WelcomeComponent;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-  console.log(session);
-  if (session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {}, // You can pass additional props here if needed
-  };
-};
