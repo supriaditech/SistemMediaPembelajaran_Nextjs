@@ -65,11 +65,10 @@ export const StickyNavbar = () => {
         ];
       case "GURU":
         return [
-          { id: "Beranda", label: "Beranda", path: "/" },
           {
             id: "TambahMateri",
-            label: "Tambah Materi",
-            path: "/tambah-materi",
+            label: "Daftar Materi",
+            path: "/",
           },
           { id: "Setting", label: "Setting", path: "/setting" },
           { id: "About", label: "About", path: "/about" },

@@ -21,6 +21,7 @@ const useTambahUser = (token: string) => {
     Error
   >(["/user/all", token], fetcher.bind(null, "/user/all", token));
 
+  console.log(data);
   // hook form
   const {
     register,

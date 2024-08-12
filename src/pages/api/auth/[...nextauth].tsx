@@ -29,11 +29,14 @@ const options: AuthOptions = {
         });
 
         const user = await response.json();
+        console.log("API Login Response:", user);
+
         if (response.ok && user.meta.statusCode === 200) {
-          // Ensure the response includes an accessToken
+          // Filter out the password from the user object
+          const { password, ...userWithoutPassword } = user.data.user;
           return {
-            ...user.data,
-            accessToken: user.data.accessToken,
+            ...userWithoutPassword,
+            accessToken: user.data.accessToken ?? null,
           };
         } else {
           return null;
@@ -45,22 +48,40 @@ const options: AuthOptions = {
 
   callbacks: {
     async jwt({ token, user }: any) {
-      // Include user in the token
       if (user) {
-        token.accessToken = user.accessToken;
-        token.id = user.id; // Include user id if needed
+        token = {
+          ...token,
+          accessToken: user.accessToken ?? null,
+          id: user.id ?? null,
+          userId: user.userId ?? null,
+          name: user.name ?? null,
+          phoneNumber: user.phoneNumber ?? null,
+          role: user.role ?? null,
+          createdAt: user.createdAt ?? null,
+          updatedAt: user.updatedAt ?? null,
+          Admin: user.Admin ?? null,
+          Guru: user.Guru ?? null,
+          Murid: user.Murid ?? null,
+        };
       }
       return token;
     },
     async session({ session, token }: any) {
-      // Pass the accessToken to the session
-      session.accessToken = token.accessToken;
+      session.accessToken = token.accessToken ?? null;
       session.user = {
-        ...session.user,
-        id: token.id, // Include other user properties if needed
+        id: token.id ?? null,
+        userId: token.userId ?? null,
+        name: token.name ?? null,
+        phoneNumber: token.phoneNumber ?? null,
+        role: token.role ?? null,
+        createdAt: token.createdAt ?? null,
+        updatedAt: token.updatedAt ?? null,
+        Admin: token.Admin ?? null,
+        Guru: token.Guru ?? null,
+        Murid: token.Murid ?? null,
       };
 
-      // If additional API call is needed to validate or extend the session
+      // Optional: fetch additional data if needed
       try {
         const response = await fetch(apiUrl + "/auth/profile", {
           method: "POST",
@@ -79,11 +100,18 @@ const options: AuthOptions = {
           signOut();
           return;
         }
-        session.user = resp.data;
+
+        session.user = {
+          ...session.user,
+          Admin: resp.data.Admin ?? session.user.Admin,
+          Guru: resp.data.Guru ?? session.user.Guru,
+          Murid: resp.data.Murid ?? session.user.Murid,
+        };
       } catch (e) {
         console.error(e);
       }
 
+      console.log("Session Data:", session);
       return session;
     },
   },
