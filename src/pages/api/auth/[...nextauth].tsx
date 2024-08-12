@@ -108,7 +108,6 @@ const options: AuthOptions = {
       } catch (e) {
         console.error(e);
       }
-
       return session;
     },
   },
