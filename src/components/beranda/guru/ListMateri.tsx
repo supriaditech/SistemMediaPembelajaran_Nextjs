@@ -16,6 +16,7 @@ import { MateriType } from "../../../../types/materiType";
 import ModalAddMateri from "./Modal/ModalAddMateri";
 import ModalEditMateri from "./Modal/ModalEditMateri";
 import ModalDeleteMateri from "./Modal/ModalDeleteMateri";
+import Link from "next/link";
 
 function ListMateri() {
   const { data: session } = useSession() as { data: SessionType | null };
@@ -116,44 +117,46 @@ function ListMateri() {
                 : "p-4 border-b border-blue-gray-50";
               return (
                 <div key={materi.id}>
-                  <div className="md:flex gap-6 bg-blue-50 p-4 rounded-md hover:bg-blue-200">
-                    <iframe
-                      className="h-64  rounded-lg"
-                      src={`https://www.youtube.com/embed/${new URLSearchParams(
-                        new URL(materi.videoUrl).search
-                      ).get("v")}`}
-                      allowFullScreen
-                    />
-                    <div className="w-full">
-                      <p className="text-lg font-bold text-black text-ellipsis overflow-hidden line-clamp-3 md:text-2xl lg:text-4xl">
-                        {materi.title}
-                      </p>
+                  <Link href={`/detail-materi?materi=${materi.id}`}>
+                    <div className="md:flex gap-6 bg-blue-50 p-4 rounded-md hover:bg-blue-200">
+                      <iframe
+                        className="h-64  rounded-lg"
+                        src={`https://www.youtube.com/embed/${new URLSearchParams(
+                          new URL(materi.videoUrl).search
+                        ).get("v")}`}
+                        allowFullScreen
+                      />
+                      <div className="w-full">
+                        <p className="text-lg font-bold text-black text-ellipsis overflow-hidden line-clamp-3 md:text-2xl lg:text-4xl">
+                          {materi.title}
+                        </p>
 
-                      <div className="text-ellipsis overflow-hidden line-clamp-3">
-                        <div
-                          dangerouslySetInnerHTML={{ __html: materi.content }}
-                        />
-                      </div>
+                        <div className="text-ellipsis overflow-hidden line-clamp-3">
+                          <div
+                            dangerouslySetInnerHTML={{ __html: materi.content }}
+                          />
+                        </div>
 
-                      <div className="grid grid-cols-2 mt-2">
-                        <Button
-                          color="blue"
-                          size="sm"
-                          className="mr-2"
-                          onClick={() => handleEdit(materi)}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          color="red"
-                          size="sm"
-                          onClick={() => handleDelete(materi?.id)}
-                        >
-                          Delete
-                        </Button>
+                        <div className="grid grid-cols-2 mt-2">
+                          <Button
+                            color="blue"
+                            size="sm"
+                            className="mr-2"
+                            onClick={() => handleEdit(materi)}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            color="red"
+                            size="sm"
+                            onClick={() => handleDelete(materi?.id)}
+                          >
+                            Delete
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               );
             })}
