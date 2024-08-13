@@ -52,7 +52,7 @@ const useMateri = (token: string) => {
       toast.error("Terjadi kesalahan saat menambahkan Materi.", {
         autoClose: 3000,
       });
-      return { success: false, error: error.message };
+      return;
     } finally {
       setIsLoading(false);
     }

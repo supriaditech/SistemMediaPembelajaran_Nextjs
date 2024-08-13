@@ -1,11 +1,11 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMateri } from "../../../../../hooks/useMateri";
 import { Button, Input } from "@material-tailwind/react";
 import { ToastContainer } from "react-toastify";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css"; // Import CSS untuk styling Quill editor
+import { useMateri } from "../../../../../hooks/useMateri";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -27,7 +27,7 @@ function ModalAddMateri({ token, onClose }: MateriProps) {
     formState: { errors },
     setValue,
   } = useForm<FormValues>();
-  const { onSubmit, loading, setIsLoading } = useMateri(token);
+  const { onSubmit, loading } = useMateri(token);
 
   const [content, setContent] = useState("");
 

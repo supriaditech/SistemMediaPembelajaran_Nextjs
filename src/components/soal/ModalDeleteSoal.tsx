@@ -1,24 +1,26 @@
-import React from "react";
-import Image from "next/image";
 import { Button } from "@material-tailwind/react";
+import Image from "next/image";
+import React from "react";
 import { ToastContainer } from "react-toastify";
-import { useMateri } from "../../../../../hooks/useMateri";
+import { useSoal } from "../../../hooks/useSoal";
 
-interface ModalDeleteMateriProps {
+interface ModalDeleteSoalProps {
   token: string;
   onClose: () => void;
+  soalId: number | null;
   materiId: number | null;
 }
 
-function ModalDeleteMateri({
+function ModalDeleteSoal({
   token,
   onClose,
+  soalId,
   materiId,
-}: ModalDeleteMateriProps) {
-  const { deleteMateri } = useMateri(token);
+}: ModalDeleteSoalProps) {
+  const { deleteMateri } = useSoal(materiId, token);
 
   const handleDelete = async () => {
-    const result = await deleteMateri(materiId!);
+    const result = await deleteMateri(soalId!);
     if (result.success) {
       onClose(); // Close the modal only on success
     }
@@ -58,4 +60,4 @@ function ModalDeleteMateri({
   );
 }
 
-export default ModalDeleteMateri;
+export default ModalDeleteSoal;
