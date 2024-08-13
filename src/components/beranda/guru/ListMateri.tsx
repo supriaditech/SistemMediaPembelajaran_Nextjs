@@ -11,12 +11,12 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import AddPhotoProfile from "./Modal/AddPhotoProfile";
-import { useMateri } from "../../../../hooks/useMateri";
 import { MateriType } from "../../../../types/materiType";
 import ModalAddMateri from "./Modal/ModalAddMateri";
 import ModalEditMateri from "./Modal/ModalEditMateri";
 import ModalDeleteMateri from "./Modal/ModalDeleteMateri";
 import Link from "next/link";
+import { useMateri } from "../../../../hooks/useMateri";
 
 function ListMateri() {
   const { data: session } = useSession() as { data: SessionType | null };
@@ -26,7 +26,7 @@ function ListMateri() {
   const token = session?.accessToken || "";
 
   const {
-    data,
+    data, // Assumed to be of type ApiResponseMateri
     error,
     mutate,
     openModal,
@@ -82,6 +82,7 @@ function ListMateri() {
     setIdMateri(id);
     setOpenModalDelete(true);
   };
+
   return (
     <div>
       <Card className="overflow-scroll h-full w-full md:px-10">
@@ -111,32 +112,39 @@ function ListMateri() {
           </div>
           <div className="grid lg:grid-cols-2 gap-4">
             {currentData?.map((materi: MateriType, index: number) => {
-              const isLast = index === (data?.data?.length ?? 0) - 1;
+              const isLast = index === (filteredData?.length ?? 0) - 1;
               const classes = isLast
                 ? "p-4"
                 : "p-4 border-b border-blue-gray-50";
+              const videoId = new URLSearchParams(
+                new URL(materi.videoUrl).search
+              ).get("v");
+
               return (
-                <div key={materi.id}>
+                <div key={materi.id} className={classes}>
                   <Link href={`/detail-materi?materi=${materi.id}`}>
                     <div className="md:flex gap-6 bg-blue-50 p-4 rounded-md hover:bg-blue-200">
-                      <iframe
-                        className="h-64  rounded-lg"
-                        src={`https://www.youtube.com/embed/${new URLSearchParams(
-                          new URL(materi.videoUrl).search
-                        ).get("v")}`}
-                        allowFullScreen
-                      />
+                      {videoId ? (
+                        <iframe
+                          className="h-64 rounded-lg"
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          allowFullScreen
+                          title={materi.title}
+                        />
+                      ) : (
+                        <div className="h-64 rounded-lg bg-gray-200 flex items-center justify-center">
+                          <p className="text-gray-600">Video tidak tersedia</p>
+                        </div>
+                      )}
                       <div className="w-full">
                         <p className="text-lg font-bold text-black text-ellipsis overflow-hidden line-clamp-3 md:text-2xl lg:text-4xl">
                           {materi.title}
                         </p>
-
                         <div className="text-ellipsis overflow-hidden line-clamp-3">
                           <div
                             dangerouslySetInnerHTML={{ __html: materi.content }}
                           />
                         </div>
-
                         <div className="grid grid-cols-2 mt-2">
                           <Button
                             color="blue"
@@ -149,7 +157,7 @@ function ListMateri() {
                           <Button
                             color="red"
                             size="sm"
-                            onClick={() => handleDelete(materi?.id)}
+                            onClick={() => handleDelete(materi.id)}
                           >
                             Delete
                           </Button>
