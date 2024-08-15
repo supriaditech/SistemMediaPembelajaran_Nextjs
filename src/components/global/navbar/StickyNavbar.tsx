@@ -75,7 +75,7 @@ export const StickyNavbar = () => {
       case "ADMIN":
         return [
           { id: "TambahUser", label: "Tambah User", path: "/" },
-          { id: "Setting", label: "Setting", path: "/setting" },
+          { id: "Profile", label: "Profile", path: "/profile" },
         ];
       case "GURU":
         return [
@@ -84,13 +84,13 @@ export const StickyNavbar = () => {
             label: "Daftar Materi",
             path: "/",
           },
-          { id: "Setting", label: "Setting", path: "/setting" },
+          { id: "Profile", label: "Profile", path: "/profile" },
           { id: "About", label: "About", path: "/about" },
         ];
       case "MURID":
         return [
           { id: "LihatMateri", label: "Lihat Materi", path: "/" },
-          { id: "Setting", label: "Setting", path: "/setting" },
+          { id: "Profile", label: "Profile", path: "/profile" },
           { id: "About", label: "About", path: "/about" },
         ];
       default:
@@ -192,7 +192,7 @@ export const StickyNavbar = () => {
                     data-popover-placement="bottom"
                     className="absolute z-10 top-10 right-0 w-40 overflow-auto rounded-md border border-blue-gray-50 bg-white p-2 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none"
                   >
-                    <Link href={"/profile?tab=account"}>
+                    <Link href={"/profile"}>
                       <li
                         role="menuitem"
                         className="flex w-full cursor-pointer select-none gap-2 items-center rounded-md px-2 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
