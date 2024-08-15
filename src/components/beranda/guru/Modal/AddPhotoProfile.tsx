@@ -52,9 +52,8 @@ const AddPhotoProfile: React.FC<AddPhotoProfileProps> = ({
 
   return (
     <div className="flex flex-col items-center justify-center p-4 ">
-      <h2 className="text-2xl font-bold mb-5 text-center">
-        Make an awesome profile picture from{" "}
-        <span className="text-blue-500">any</span> photo
+      <h2 className="text-2xl font-bold mb-5 text-center text-black">
+        Lengkapi Profile Anda
       </h2>
 
       <div className="relative w-32 h-32 mb-4">

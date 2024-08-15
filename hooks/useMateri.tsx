@@ -48,7 +48,6 @@ const useMateri = (token: string) => {
     setCurrentPage(page);
   };
 
-  console.log(data);
   const onSubmit: SubmitHandler<AddMateriType> = async (data) => {
     setIsLoading(true);
     try {

@@ -78,7 +78,6 @@ const useSoal = (materiId: any, token: string) => {
   };
 
   const onEditSubmit: SubmitHandler<any> = async (data) => {
-    console.log(data, "sdadffsf");
     setIsLoading(true);
     try {
       const api = new Api();
