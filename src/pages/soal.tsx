@@ -171,6 +171,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
+  if (session.user.role !== "GURU") {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
   const token = session?.accessToken;
 
   return {

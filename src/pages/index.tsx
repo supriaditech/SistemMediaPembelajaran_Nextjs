@@ -49,7 +49,6 @@ export default function Home({ title, session, token, userType }: HomeProps) {
     onEditSubmit,
   } = useTambahUser(token);
 
-  console.log(userType);
   // Debugging logs
 
   if (error) {
@@ -94,7 +93,7 @@ export default function Home({ title, session, token, userType }: HomeProps) {
         <>
           <Card className="overflow-scroll h-full w-full md:px-10">
             <CardBody>
-              <div className="w-full flex justify-between py-6">
+              <div className="w-full lg:flex justify-between py-6">
                 <Typography variant="h5" className="mb-4 text-black">
                   Data User
                 </Typography>

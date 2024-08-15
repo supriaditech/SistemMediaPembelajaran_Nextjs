@@ -15,14 +15,12 @@ export const fetcherMateri = async (
   token: string,
   body?: any
 ): Promise<any> => {
-  console.log(url);
   const api = new Api();
   api.url = url;
   api.auth = true;
   api.token = token;
   api.body = body;
   const data = await api.call();
-  console.log("===========", data);
   return data;
 };
 

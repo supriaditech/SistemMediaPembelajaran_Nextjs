@@ -74,9 +74,8 @@ export const StickyNavbar = () => {
     switch (session?.user?.role) {
       case "ADMIN":
         return [
-          { id: "TambahUser", label: "Tambah User", path: "/tambah-user" },
+          { id: "TambahUser", label: "Tambah User", path: "/" },
           { id: "Setting", label: "Setting", path: "/setting" },
-          { id: "About", label: "About", path: "/about" },
         ];
       case "GURU":
         return [
@@ -90,7 +89,7 @@ export const StickyNavbar = () => {
         ];
       case "MURID":
         return [
-          { id: "LihatMateri", label: "Lihat Materi", path: "/lihat-materi" },
+          { id: "LihatMateri", label: "Lihat Materi", path: "/" },
           { id: "Setting", label: "Setting", path: "/setting" },
           { id: "About", label: "About", path: "/about" },
         ];
@@ -104,15 +103,15 @@ export const StickyNavbar = () => {
       {navItems().map((item) => (
         <Typography
           as="li"
-          className={`text-sm text-tertiary font-semibold py-2 px-4 rounded-none border-b border-transparent ${
+          className={` text-black text-sm text-tertiary font-semibold py-2 px-4 rounded-none border-b border-transparent ${
             isActive === item.id
               ? "bg-transparan text-black border-blue-500"
-              : "hover:bg-transparan hover:text-blue-300 hover:border-blue-500"
+              : "hover:bg-transparan hover:text-blue-300 hover:border-blue-500 text-black"
           }`}
           key={item.id}
         >
           <Link
-            href={`/${locale}${item.path}`}
+            href={`/${item.path}`}
             className="flex items-center"
             onClick={() => handleSetActive(item.id)}
           >
@@ -148,17 +147,11 @@ export const StickyNavbar = () => {
             {session?.user ? (
               <div className="relative flex justify-center items-center ml-2">
                 <button
-                  className="ml-2 flex justify-center items-center gap-4"
+                  className="ml-2 flex justify-center items-center gap-2 md:gap-4"
                   onClick={toggleMenu}
                 >
                   {photoProfile ? (
-                    <div
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        overflow: "hidden",
-                      }}
-                    >
+                    <div className="w-6 h-6 md:w-12 md:h-12 overflow-hidden">
                       <Image
                         src={photoProfile}
                         width={40}
@@ -175,7 +168,7 @@ export const StickyNavbar = () => {
                   ) : (
                     <HiOutlineUser className="w-6 h-6" /> // Icon pengguna default jika photoProfile tidak ada
                   )}
-                  <div className="flex flex-col justify-center items-start ">
+                  <div className="flex md:flex-col justify-center items-start gap-2 md:gap-0 ">
                     <p className="font-bold">{session?.user?.name}</p>
                     <p
                       className={`rounded-sm px-4 text-white ${
@@ -209,12 +202,6 @@ export const StickyNavbar = () => {
                     </Link>
                     <li
                       role="menuitem"
-                      className="flex w-full cursor-pointer select-none gap-2 items-center rounded-md px-2 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
-                    >
-                      <BiListUl className="w-6 h-6" /> Contact List
-                    </li>
-                    <li
-                      role="menuitem"
                       className="flex w-full cursor-pointer select-none gap-2 items-center rounded-md px-2 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-red-700 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900 text-red-500"
                       onClick={() =>
                         toast.promise(
@@ -241,24 +228,13 @@ export const StickyNavbar = () => {
               </div>
             ) : (
               <div className="hidden items-center  -mr-3  gap-x-1 lg:flex">
-                <Link href={`/${locale}/login`}>
+                <Link href={`/login`}>
                   <Button
                     size="sm"
                     className="bg-transparent rounded-none shadow-none hidden lg:inline-block border-b border-transparent hover:border-b-1 hover:shadow-none hover:border-red-500"
                   >
                     <Typography className="text-sm text-tertiary font-semibold normal-case">
                       Log In
-                    </Typography>
-                  </Button>
-                </Link>
-                |
-                <Link href={`/${locale}/register`}>
-                  <Button
-                    size="sm"
-                    className="bg-transparent rounded-none shadow-none hidden lg:inline-block border-b border-transparent hover:shadow-none hover:border-b-1 hover:border-red-500"
-                  >
-                    <Typography className="text-sm text-tertiary font-semibold normal-case">
-                      Register
                     </Typography>
                   </Button>
                 </Link>
@@ -305,31 +281,20 @@ export const StickyNavbar = () => {
         </div>
       </div>
       <Collapse open={openNav}>
-        <div></div>
         {navList}
         <div className="flex items-center justify-between text-gray-700 w-full">
-          <div className="items-center gap-4 flex w-full justify-between px-4">
-            <Link href={`/${locale}/login`}>
+          {!session?.user && (
+            <Link href={`login`} className="w-full ">
               <Button
                 size="sm"
-                className="bg-transparent shadow-none inline-block bg-gray-300 rounded-md w-40 text-gray-700 border-b border-transparent hover:border-b-1 hover:shadow-none hover:border-red-500"
+                className="bg-transparent w-full shadow-none inline-block bg-gray-300 rounded-md text-gray-700 border-b border-transparent hover:border-b-1 hover:shadow-none hover:border-red-500"
               >
                 <Typography className="text-sm text-tertiary font-semibold normal-case">
                   Log In
                 </Typography>
               </Button>
             </Link>
-            <Link href={`/${locale}/register`}>
-              <Button
-                size="sm"
-                className="bg-transparent bg-gray-300 rounded-md shadow-none inline-block w-40 text-gray-700 border-b border-transparent hover:shadow-none hover:border-b-1 hover:border-red-500"
-              >
-                <Typography className="text-sm text-tertiary font-semibold normal-case">
-                  Register
-                </Typography>
-              </Button>
-            </Link>
-          </div>
+          )}
         </div>
       </Collapse>
     </Navbar>

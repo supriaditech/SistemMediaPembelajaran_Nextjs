@@ -3,38 +3,36 @@ import Api from "../service/Api";
 import { toast } from "react-toastify";
 import { useSession, signOut, getSession } from "next-auth/react";
 
-const usePhotoProfile = (token: any, userType:String) => {
+const usePhotoProfile = (token: any, userType: String) => {
   const [modalPhotoProfile, setPhotoProfile] = useState(false);
   const [loading, setLoading] = useState(false);
   const { data: session, update } = useSession();
 
-  const uploadPhoto = async (userId: number, id:number,  photo: File) => {
+  const uploadPhoto = async (userId: number, id: number, photo: File) => {
     const formData = new FormData();
-    if(userType==="GURU"){
-
+    if (userType === "GURU") {
       formData.append("userId", userId.toString());
       formData.append("photo", photo);
-    }else{
-            formData.append("userId", id.toString());
+    } else {
+      formData.append("userId", id.toString());
       formData.append("photo", photo);
     }
 
     // Inspect FormData entries
-    Array.from(formData.entries()).forEach(([key, value]) => {
-      console.log(`${key}:`, value);
-    });
+    // Array.from(formData.entries()).forEach(([key, value]) => {
+    //   console.log(`${key}:`, value);
+    // });
 
     setLoading(true);
     try {
       const api = new Api();
-      api.url = userType === "GURU" ?"/guru/create":"/murid/create";
+      api.url = userType === "GURU" ? "/guru/create" : "/murid/create";
       api.auth = true;
       api.token = token;
       api.type = "form"; // Set type to "form" for multipart/form-data
       api.body = formData;
 
       const response = await api.call();
-      console.log(response)
       if (response.meta.statusCode === 200) {
         toast.success("Photo berhasil diunggah!", { autoClose: 3000 });
         // setPhotoProfile(false); // Close the modal only on success
