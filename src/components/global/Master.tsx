@@ -19,11 +19,11 @@ const Master: React.FC<MasterProps> = ({ children, title }) => {
         <main className="flex-grow">{children}</main>
         {/* <Footer showCarRentals={showCarRentals} /> */}
       </div>
-      <ToastContainer
+      {/* <ToastContainer
         theme="colored"
         transition={Slide}
         position="top-center"
-      />
+      /> */}
     </>
   );
 };

@@ -27,26 +27,31 @@ function DetailMateri({ materiData, userType }: any) {
     });
   };
 
+  const handleViewSoalMurid = () => {
+    router.push({
+      pathname: "/soal-murid",
+      query: { materiId: materiData.id }, // Mengirim data menggunakan state
+    });
+  };
+
   return (
     <Master title="Detail materi">
       <div className="px-4 md:px-20 py-10">
-        <div className="flex mb-4 w-full justify-between items-center ">
+        <div className="md:flex mb-4 w-full justify-between items-center ">
           <p className="text-md md:text-lg lg:text-4xl font-bold mb-4 leading-tight">
             {materiData.title}
           </p>
-          {userType === "GURU" && (
-            <Button
-              size="sm"
-              className="mr-2 bg-buttonGreen w-40"
-              onClick={handleViewSoal}
-            >
-              Lihat soal
-            </Button>
-          )}
+          <Button
+            size="sm"
+            className="mr-2 bg-buttonGreen w-full md:w-40"
+            onClick={userType === "GURU" ? handleViewSoal : handleViewSoalMurid}
+          >
+            Lihat soal
+          </Button>
         </div>
         <div className="relative pb-[56.25%] h-0">
           <iframe
-            className="absolute top-0 left-0 w-full h-full rounded-lg"
+            className="absolute top-0 left-0 w-full h-full rounded-lg "
             src={`https://www.youtube.com/embed/${new URLSearchParams(
               new URL(materiData.videoUrl).search
             ).get("v")}`}
@@ -55,7 +60,7 @@ function DetailMateri({ materiData, userType }: any) {
         </div>
 
         <div
-          className="mt-4 text-justify"
+          className="mt-4 text-justify text-black"
           dangerouslySetInnerHTML={{ __html: materiData.content }}
         />
       </div>

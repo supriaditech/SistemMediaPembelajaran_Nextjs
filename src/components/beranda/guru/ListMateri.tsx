@@ -23,14 +23,12 @@ interface listMateriPros {
 }
 
 function ListMateri({ userType }: listMateriPros) {
-  console.log(userType);
   const { data: session } = useSession() as { data: SessionType | null };
   const { modalPhotoProfile, setPhotoProfile } = usePhotoProfile(
     session?.accessToken ?? null,
     userType
   );
   const token = session?.accessToken || "";
-  console.log(session);
   const {
     data, // Assumed to be of type ApiResponseMateri
     error,
@@ -53,9 +51,6 @@ function ListMateri({ userType }: listMateriPros) {
     onEditSubmit,
   } = useMateri(token);
 
-  console.log(modalPhotoProfile);
-  console.log(session);
-
   useEffect(() => {
     if (session) {
       if (userType === "GURU" && session.user?.Guru === null) {
@@ -75,7 +70,6 @@ function ListMateri({ userType }: listMateriPros) {
     }
   }, [session, userType, setPhotoProfile]);
 
-  console.log(modalPhotoProfile);
   // Filter data
   const filteredData = useMemo(() => {
     return data?.data?.filter(
@@ -93,7 +87,6 @@ function ListMateri({ userType }: listMateriPros) {
     startIndex,
     startIndex + itemsPerPage
   );
-  console.log(currentData);
   const handleEdit = (materi: MateriType) => {
     setSelectedMateri(materi);
     setOpenModalEdit(true);
@@ -106,7 +99,7 @@ function ListMateri({ userType }: listMateriPros) {
 
   return (
     <div>
-      <Card className="overflow-scroll h-full w-full md:px-10">
+      <Card className="overflow-y-auto h-full w-full md:px-10 bg-red">
         <CardBody>
           <div className="w-full lg:flex justify-between py-6">
             <Typography variant="h5" className="mb-4 text-black">
@@ -133,23 +126,26 @@ function ListMateri({ userType }: listMateriPros) {
               )}
             </div>
           </div>
-          <div className="grid lg:grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-2 gap-4 ">
             {currentData?.map((materi: MateriType, index: number) => {
               const isLast = index === (filteredData?.length ?? 0) - 1;
               const classes = isLast
-                ? "p-4"
-                : "p-4 border-b border-blue-gray-50";
+                ? "p-4 w-full bg-red-500"
+                : "p-4 border-b border-blue-gray-50 w-full";
               const videoId = new URLSearchParams(
                 new URL(materi.videoUrl).search
               ).get("v");
 
               return (
-                <div key={materi.id} className={classes}>
+                <div
+                  key={materi.id}
+                  className="md:p-4 border-b border-blue-gray-50 w-full max-w-full overflow-hidden"
+                >
                   <Link href={`/detail-materi?materi=${materi.id}`}>
-                    <div className="md:flex gap-6 bg-blue-50 p-4 rounded-md hover:bg-blue-200">
+                    <div className="md:flex gap-6 bg-blue-50 p-4 rounded-md hover:bg-blue-200 w-full">
                       {videoId ? (
                         <iframe
-                          className="h-64 rounded-lg"
+                          className="w-full md:h-64 rounded-lg"
                           src={`https://www.youtube.com/embed/${videoId}`}
                           allowFullScreen
                           title={materi.title}
