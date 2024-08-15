@@ -5,11 +5,26 @@ import {
   MateriType,
 } from "../types/materiType";
 import { error } from "@material-tailwind/react/types/components/input";
-import { fetcher } from "../utils/fatcher";
 import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import Api from "../service/Api";
 import { toast } from "react-toastify";
+
+export const fetcherMateri = async (
+  url: string,
+  token: string,
+  body?: any
+): Promise<any> => {
+  console.log(url);
+  const api = new Api();
+  api.url = url;
+  api.auth = true;
+  api.token = token;
+  api.body = body;
+  const data = await api.call();
+  console.log("===========", data);
+  return data;
+};
 
 const useMateri = (token: string) => {
   const [openModal, setOpenModal] = useState(false);
@@ -24,12 +39,16 @@ const useMateri = (token: string) => {
   const { data, error, mutate }: SWRResponse<ApiResponseMateri, Error> = useSWR<
     ApiResponseMateri,
     Error
-  >(["/materi/get-all", token], fetcher.bind(null, "/materi/get-all", token));
+  >(
+    ["/materi/get-all", token],
+    fetcherMateri.bind(null, "/materi/get-all", token)
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
+  console.log(data);
   const onSubmit: SubmitHandler<AddMateriType> = async (data) => {
     setIsLoading(true);
     try {

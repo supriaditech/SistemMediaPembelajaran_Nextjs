@@ -18,7 +18,12 @@ import ModalDeleteMateri from "./Modal/ModalDeleteMateri";
 import Link from "next/link";
 import { useMateri } from "../../../../hooks/useMateri";
 
-function ListMateri() {
+interface listMateriPros {
+  userType: String;
+}
+
+function ListMateri({ userType }: listMateriPros) {
+  console.log(userType);
   const { data: session } = useSession() as { data: SessionType | null };
   const { modalPhotoProfile, setPhotoProfile } = usePhotoProfile(
     session?.accessToken ?? null
@@ -48,13 +53,14 @@ function ListMateri() {
   } = useMateri(token);
 
   useEffect(() => {
-    if (session?.user?.Guru === null) {
+    if (session?.user?.Guru === null || session?.user.Murid === null) {
       setPhotoProfile(true);
     } else {
       setPhotoProfile(false);
     }
   }, [session, setPhotoProfile]);
 
+  console.log(modalPhotoProfile);
   // Filter data
   const filteredData = useMemo(() => {
     return data?.data?.filter(
@@ -72,7 +78,7 @@ function ListMateri() {
     startIndex,
     startIndex + itemsPerPage
   );
-
+  console.log(currentData);
   const handleEdit = (materi: MateriType) => {
     setSelectedMateri(materi);
     setOpenModalEdit(true);
@@ -192,7 +198,12 @@ function ListMateri() {
       </Card>
       <Dialog
         open={modalPhotoProfile}
-        handler={() => setPhotoProfile(false)}
+        handler={() => {
+          // Memastikan modal hanya bisa ditutup jika session.user.Guru atau session.user.Murid tidak null
+          if (session?.user?.Guru !== null || session?.user?.Murid !== null) {
+            setPhotoProfile(false);
+          }
+        }}
         animate={{
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
