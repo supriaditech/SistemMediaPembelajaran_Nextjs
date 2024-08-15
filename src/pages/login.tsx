@@ -4,6 +4,7 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
+import { ToastContainer } from "react-toastify";
 
 function login() {
   return (
@@ -17,7 +18,18 @@ function login() {
         <div className="bg-white grid grid-cols-1 md:grid-cols-2 justify-center items-center h-full w-full max-w-4xl rounded-lg shadow-lg">
           <WelcomeComponent />
           <FormInputComponent />
-        </div>
+        </div>{" "}
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
     </>
   );

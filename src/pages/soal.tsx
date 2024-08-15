@@ -42,7 +42,6 @@ function Soal({ token }: soalProps) {
 
   // Check if data and data.data are defined
   const soalData = (data as SoalsResponseType)?.data ?? [];
-  console.log("ini adlah ", soalData);
 
   const handleEdit = (soal: SoalType) => {
     setSelectedSoal(soal);

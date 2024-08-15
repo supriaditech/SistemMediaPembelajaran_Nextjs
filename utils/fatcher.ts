@@ -11,6 +11,5 @@ export const fetcher = async (
   api.token = token;
   api.body = body;
   const data = await api.call();
-  console.log("===========", data);
   return data;
 };

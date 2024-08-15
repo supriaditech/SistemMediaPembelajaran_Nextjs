@@ -30,10 +30,21 @@ export const StickyNavbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const { data: session } = useSession() as { data: SessionType | null };
-  let photoProfile
-  if(session?.user.Guru?.photo){
-    photoProfile = ApiUrl + "/"+session?.user.Guru?.photo
+  let photoProfile;
+  let gayaBelajar;
+  if (session?.user?.role === "GURU") {
+    if (session?.user?.Guru?.photo) {
+      photoProfile = ApiUrl + "/" + session?.user.Guru?.photo;
+    }
+  } else if (session?.user?.role === "MURID") {
+    if (session?.user?.Murid?.photo) {
+      photoProfile = ApiUrl + "/" + session?.user.Murid?.photo;
+    }
+    if (session?.user?.Murid?.gayaBelajar) {
+      gayaBelajar = session?.user?.Murid?.gayaBelajar;
+    }
   }
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 960) {
@@ -129,7 +140,6 @@ export const StickyNavbar = () => {
             width={180}
             height={48}
             priority
-
           />
         </Typography>
         <div className="lg:flex mr-4 hidden ">{navList}</div>
@@ -137,13 +147,50 @@ export const StickyNavbar = () => {
           <div className="flex items-center gap-x-1">
             {session?.user ? (
               <div className="relative flex justify-center items-center ml-2">
-                <button className="ml-2 flex justify-center items-center gap-4" onClick={toggleMenu}>
-                    {photoProfile ? (
-                      <Image src={photoProfile} width={20} height={20} alt="Profile Picture" className="rounded-full"/>
-                    ) : (
-                      <HiOutlineUser className="w-6 h-6" /> // Icon pengguna default jika photoProfile tidak ada
-                    )}
-                    {session?.user?.name}
+                <button
+                  className="ml-2 flex justify-center items-center gap-4"
+                  onClick={toggleMenu}
+                >
+                  {photoProfile ? (
+                    <div
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Image
+                        src={photoProfile}
+                        width={40}
+                        height={40}
+                        alt="Profile Picture"
+                        style={{
+                          objectFit: "cover",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                        className="rounded-full"
+                      />
+                    </div>
+                  ) : (
+                    <HiOutlineUser className="w-6 h-6" /> // Icon pengguna default jika photoProfile tidak ada
+                  )}
+                  <div className="flex flex-col justify-center items-start ">
+                    <p className="font-bold">{session?.user?.name}</p>
+                    <p
+                      className={`rounded-sm px-4 text-white ${
+                        gayaBelajar === "Visual"
+                          ? "bg-red-400"
+                          : gayaBelajar === "Kinestetik"
+                          ? "bg-blue-400"
+                          : gayaBelajar === "Auditori"
+                          ? "bg-green-400"
+                          : "bg-gray-400" // Default color if none of the conditions match
+                      }`}
+                    >
+                      {gayaBelajar ?? ""}
+                    </p>
+                  </div>
                 </button>
                 {isMenuOpen && (
                   <ul

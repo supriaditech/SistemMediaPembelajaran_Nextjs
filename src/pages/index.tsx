@@ -48,6 +48,10 @@ export default function Home({ title, session, token, userType }: HomeProps) {
     currentPage,
     onEditSubmit,
   } = useTambahUser(token);
+
+  console.log(userType);
+  // Debugging logs
+
   if (error) {
     return <div>Error loading data</div>;
   }
@@ -57,16 +61,22 @@ export default function Home({ title, session, token, userType }: HomeProps) {
   }
 
   const handleEdit = (user: UserType) => {
-    setSelectedUser(user);
-    setOpenModalEdit(true);
+    if (user) {
+      setSelectedUser(user);
+      setOpenModalEdit(true);
+    } else {
+      console.error("handleEdit called with undefined user");
+    }
   };
 
   const handleDelete = (id: number) => {
-    setIdUser(id);
-    setOpenModalDelete(true);
+    if (id) {
+      setIdUser(id);
+      setOpenModalDelete(true);
+    } else {
+      console.error("handleDelete called with undefined id");
+    }
   };
-
-  // Function to format date
 
   const TABLE_HEAD = [
     "No",
@@ -128,7 +138,7 @@ export default function Home({ title, session, token, userType }: HomeProps) {
                 </thead>
                 <tbody>
                   {currentData?.map((user: UserType, index: number) => {
-                    const isLast = index === data.data.length - 1;
+                    const isLast = index === currentData.length - 1;
                     const classes = isLast
                       ? "p-4"
                       : "p-4 border-b border-blue-gray-50";
@@ -279,7 +289,8 @@ export default function Home({ title, session, token, userType }: HomeProps) {
         </>
       )}
 
-      {userType === "GURU" && <ListMateri />}
+      {userType === "GURU" && <ListMateri userType={userType} />}
+      {userType === "MURID" && <ListMateri userType={userType} />}
     </Master>
   );
 }
