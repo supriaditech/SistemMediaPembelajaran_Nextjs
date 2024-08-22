@@ -141,31 +141,31 @@ function ListMateri({ userType }: listMateriPros) {
                   key={materi.id}
                   className="md:p-4 border-b border-blue-gray-50 w-full max-w-full overflow-hidden"
                 >
-                  <Link href={`/detail-materi?materi=${materi.id}`}>
-                    <div className="md:flex gap-6 bg-blue-50 p-4 rounded-md hover:bg-blue-200 w-full">
-                      {videoId ? (
-                        <iframe
-                          className="w-full md:h-64 rounded-lg"
-                          src={`https://www.youtube.com/embed/${videoId}`}
-                          allowFullScreen
-                          title={materi.title}
+                  <div className="md:grid grid-cols-2 gap-6 bg-blue-50 p-4 rounded-md hover:bg-blue-200 w-full">
+                    {videoId ? (
+                      <iframe
+                        className="w-full md:h-64 rounded-lg"
+                        src={`https://www.youtube.com/embed/${videoId}`}
+                        allowFullScreen
+                        title={materi.title}
+                      />
+                    ) : (
+                      <div className="h-64 rounded-lg bg-gray-200 flex items-center justify-center">
+                        <p className="text-gray-600">Video tidak tersedia</p>
+                      </div>
+                    )}
+                    <div className="w-full">
+                      <p className="text-lg font-bold text-black text-ellipsis overflow-hidden line-clamp-3 md:text-2xl">
+                        {materi.title}
+                      </p>
+                      <div className="text-ellipsis overflow-hidden line-clamp-3">
+                        <div
+                          dangerouslySetInnerHTML={{ __html: materi.content }}
                         />
-                      ) : (
-                        <div className="h-64 rounded-lg bg-gray-200 flex items-center justify-center">
-                          <p className="text-gray-600">Video tidak tersedia</p>
-                        </div>
-                      )}
-                      <div className="w-full">
-                        <p className="text-lg font-bold text-black text-ellipsis overflow-hidden line-clamp-3 md:text-2xl lg:text-4xl">
-                          {materi.title}
-                        </p>
-                        <div className="text-ellipsis overflow-hidden line-clamp-3">
-                          <div
-                            dangerouslySetInnerHTML={{ __html: materi.content }}
-                          />
-                        </div>
-                        {userType === "GURU" && (
-                          <div className="grid grid-cols-2 mt-2">
+                      </div>
+                      {userType === "GURU" && (
+                        <>
+                          <div className="grid grid-cols-2 my-2">
                             <Button
                               color="blue"
                               size="sm"
@@ -182,10 +182,18 @@ function ListMateri({ userType }: listMateriPros) {
                               Delete
                             </Button>
                           </div>
-                        )}
-                      </div>
+                          <div className="w-full">
+                            <Link
+                              href={`/detail-materi?materi=${materi.id}`}
+                              className="bg-black  py-2 rounded-md w-full text-white block text-center hover:bg-gray-800"
+                            >
+                              Detail Materi
+                            </Link>
+                          </div>
+                        </>
+                      )}
                     </div>
-                  </Link>
+                  </div>
                 </div>
               );
             })}
@@ -233,7 +241,11 @@ function ListMateri({ userType }: listMateriPros) {
         }}
         className="flex-row justify-center item-center"
       >
-        <div className="w-full p-4 bg-white rounded-lg shadow-lg overflow-y-auto max-h-screen">
+        <div
+          className={`w-full p-4 bg-white rounded-lg shadow-lg overflow-y-auto max-h-screen ${
+            userType === "GURU" ? "h-96" : ""
+          }`}
+        >
           <AddPhotoProfile
             token={session?.accessToken ?? ""}
             userId={session?.user?.userId ?? null}

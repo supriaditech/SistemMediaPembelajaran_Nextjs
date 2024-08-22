@@ -108,8 +108,7 @@ function FormAddGayaBelajar() {
         <DialogBody>
           {gayaBelajar ? (
             <p>
-              Gaya belajar anda adalah
-              <strong>{gayaBelajar}</strong>.
+              Gaya belajar anda adalah <strong>{gayaBelajar}</strong>.
             </p>
           ) : (
             <p>Terjadi kesalahan dalam menentukan gaya belajar.</p>

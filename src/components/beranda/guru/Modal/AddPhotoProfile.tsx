@@ -25,7 +25,7 @@ const AddPhotoProfile: React.FC<AddPhotoProfileProps> = ({
 }) => {
   const { uploadPhoto, loading } = usePhotoProfile(token, userType);
   const { data: session } = useSession() as { data: SessionType | null };
-
+  console.log(session);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     session?.user?.Murid?.photo ? ApiUrl + "/" + session.user.Murid.photo : null
@@ -56,7 +56,7 @@ const AddPhotoProfile: React.FC<AddPhotoProfileProps> = ({
         Lengkapi Profile Anda
       </h2>
 
-      <div className="relative w-32 h-32 mb-4">
+      <div className="relative w-32 h-32 mb-4 ">
         <div className="relative rounded-full w-full h-full overflow-hidden bg-gray-500">
           {previewUrl && (
             <Image
@@ -68,7 +68,37 @@ const AddPhotoProfile: React.FC<AddPhotoProfileProps> = ({
             />
           )}
         </div>
-        {userType === "MURID" && session?.user?.Murid?.gayaBelajar !== null ? (
+        {userType == "GURU" && (
+          <div className=" w-full flex flex-col justify-start items-center">
+            <input
+              type="file"
+              id="file-upload"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <label htmlFor="file-upload">
+              <p
+                className="absolute bottom-2 right-5 transform translate-y-1/2 translate-x-1/2 rounded-full bg-green-500 w-10 h-10 text-white text-2xl flex items-center justify-center"
+                style={{ zIndex: 10 }}
+              >
+                +
+              </p>
+            </label>
+            <p className="mt-4 text-gray-600 w-40 text-center">
+              Upload your photo
+            </p>
+            <div className="mt-4 flex justify-end space-x-2">
+              <Button
+                color="green"
+                onClick={handleUpload}
+                disabled={loading || !selectedFile}
+              >
+                {loading ? "Uploading..." : "Upload"}
+              </Button>
+            </div>
+          </div>
+        )}
+        {userType == "MURID" && session?.user?.Murid?.gayaBelajar !== null ? (
           <>
             <input
               type="file"
@@ -104,7 +134,7 @@ const AddPhotoProfile: React.FC<AddPhotoProfileProps> = ({
           </div>
         </>
       ) : (
-        <FormAddGayaBelajar />
+        <>{userType === "MURID" && <FormAddGayaBelajar />}</>
       )}
       <ToastContainer
         position="top-center"
