@@ -77,7 +77,7 @@ export default Profile;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session: SessionType | null = (await getSession(
-    context
+    context,
   )) as SessionType | null;
 
   if (!session) {

@@ -53,7 +53,7 @@ function DetailMateri({ materiData, userType }: any) {
           <iframe
             className="absolute top-0 left-0 w-full h-full rounded-lg "
             src={`https://www.youtube.com/embed/${new URLSearchParams(
-              new URL(materiData.videoUrl).search
+              new URL(materiData.videoUrl).search,
             ).get("v")}`}
             allowFullScreen
           />
@@ -71,9 +71,9 @@ function DetailMateri({ materiData, userType }: any) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { materi } = context.query;
   const session: SessionType | null = (await getSession(
-    context
+    context,
   )) as SessionType | null;
-  let userType = session?.user?.role;
+  const userType = session?.user?.role;
   if (!session) {
     return {
       redirect: {

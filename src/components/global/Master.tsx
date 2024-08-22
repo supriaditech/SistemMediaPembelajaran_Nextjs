@@ -8,24 +8,22 @@ interface MasterProps {
   title: string;
 }
 
-const Master: React.FC<MasterProps> = ({ children, title }) => {
-  return (
-    <>
-      <Head>
-        <title>{title}</title>
-      </Head>
-      <div className="min-h-screen flex flex-col">
-        <StickyNavbar />
-        <main className="flex-grow">{children}</main>
-        {/* <Footer showCarRentals={showCarRentals} /> */}
-      </div>
-      {/* <ToastContainer
+const Master: React.FC<MasterProps> = ({ children, title }) => (
+  <>
+    <Head>
+      <title>{title}</title>
+    </Head>
+    <div className="min-h-screen flex flex-col">
+      <StickyNavbar />
+      <main className="flex-grow">{children}</main>
+      {/* <Footer showCarRentals={showCarRentals} /> */}
+    </div>
+    {/* <ToastContainer
         theme="colored"
         transition={Slide}
         position="top-center"
       /> */}
-    </>
-  );
-};
+  </>
+);
 
 export default Master;

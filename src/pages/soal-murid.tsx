@@ -29,7 +29,7 @@ function SoalMurid({ token }: any) {
   const handleJawabanChange = (soalId: number, jawaban: string) => {
     setJawabanList((prevJawabanList) => {
       const updatedList = prevJawabanList.filter(
-        (item) => item.soalId !== soalId
+        (item) => item.soalId !== soalId,
       );
       return [...updatedList, { soalId, jawaban }];
     });
@@ -64,7 +64,7 @@ function SoalMurid({ token }: any) {
         {soalData.length > 0 ? (
           soalData.map((soal, index: number) => {
             const jawabanHasil = hasilJawaban.find(
-              (hasil) => hasil.jawaban.soalId === soal.id
+              (hasil) => hasil.jawaban.soalId === soal.id,
             );
             return (
               <div key={soal.id} className="mb-4 bg-blue-50 p-8 rounded-md">
@@ -156,7 +156,7 @@ export default SoalMurid;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session: SessionType | null = (await getSession(
-    context
+    context,
   )) as SessionType | null;
 
   if (!session) {

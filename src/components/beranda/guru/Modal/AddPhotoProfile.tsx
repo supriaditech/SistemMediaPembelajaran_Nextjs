@@ -11,7 +11,7 @@ import FormAddGayaBelajar from "../../murid/FormAddGayaBelajar";
 interface AddPhotoProfileProps {
   token: string;
   userId: any;
-  userType: String;
+  userType: string;
   id: number | undefined;
   onClose: () => void;
 }
@@ -25,10 +25,11 @@ const AddPhotoProfile: React.FC<AddPhotoProfileProps> = ({
 }) => {
   const { uploadPhoto, loading } = usePhotoProfile(token, userType);
   const { data: session } = useSession() as { data: SessionType | null };
-  console.log(session);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
-    session?.user?.Murid?.photo ? ApiUrl + "/" + session.user.Murid.photo : null
+    session?.user?.Murid?.photo
+      ? ApiUrl + "/" + session.user.Murid.photo
+      : null,
   );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,7 +117,7 @@ const AddPhotoProfile: React.FC<AddPhotoProfileProps> = ({
             </label>
           </>
         ) : (
-          <div></div>
+          <div />
         )}
       </div>
 

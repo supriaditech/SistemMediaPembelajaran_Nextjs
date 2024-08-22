@@ -54,7 +54,7 @@ function ModalAddSoal({ token, onClose, materiId }: ModalSoalProps) {
     // Validate answer
     if (!optionPrefixes.includes(data.answer)) {
       toast.error(
-        "Jawaban tidak valid. Pilih salah satu opsi yang tersedia (a, b, c, d)."
+        "Jawaban tidak valid. Pilih salah satu opsi yang tersedia (a, b, c, d).",
       );
       return;
     }

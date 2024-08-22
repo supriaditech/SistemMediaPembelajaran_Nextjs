@@ -175,10 +175,10 @@ export const StickyNavbar = () => {
                         gayaBelajar === "Visual"
                           ? "bg-red-400"
                           : gayaBelajar === "Kinestetik"
-                          ? "bg-blue-400"
-                          : gayaBelajar === "Auditori"
-                          ? "bg-green-400"
-                          : "bg-gray-400" // Default color if none of the conditions match
+                            ? "bg-blue-400"
+                            : gayaBelajar === "Auditori"
+                              ? "bg-green-400"
+                              : "bg-gray-400" // Default color if none of the conditions match
                       }`}
                     >
                       {gayaBelajar ?? ""}
@@ -217,7 +217,7 @@ export const StickyNavbar = () => {
                             success: "Logged out. Redirecting...",
                             pending: "Logging out...",
                             error: "Log out failed.",
-                          }
+                          },
                         )
                       }
                     >

@@ -19,14 +19,14 @@ import Link from "next/link";
 import { useMateri } from "../../../../hooks/useMateri";
 
 interface listMateriPros {
-  userType: String;
+  userType: string;
 }
 
 function ListMateri({ userType }: listMateriPros) {
   const { data: session } = useSession() as { data: SessionType | null };
   const { modalPhotoProfile, setPhotoProfile } = usePhotoProfile(
     session?.accessToken ?? null,
-    userType
+    userType,
   );
   const token = session?.accessToken || "";
   const {
@@ -71,13 +71,15 @@ function ListMateri({ userType }: listMateriPros) {
   }, [session, userType, setPhotoProfile]);
 
   // Filter data
-  const filteredData = useMemo(() => {
-    return data?.data?.filter(
-      (materi: MateriType) =>
-        materi.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        materi.content.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [searchQuery, data]);
+  const filteredData = useMemo(
+    () =>
+      data?.data?.filter(
+        (materi: MateriType) =>
+          materi.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          materi.content.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    [searchQuery, data],
+  );
 
   // Paginasi
   const itemsPerPage = 10;
@@ -85,7 +87,7 @@ function ListMateri({ userType }: listMateriPros) {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = filteredData?.slice(
     startIndex,
-    startIndex + itemsPerPage
+    startIndex + itemsPerPage,
   );
   const handleEdit = (materi: MateriType) => {
     setSelectedMateri(materi);
@@ -133,7 +135,7 @@ function ListMateri({ userType }: listMateriPros) {
                 ? "p-4 w-full bg-red-500"
                 : "p-4 border-b border-blue-gray-50 w-full";
               const videoId = new URLSearchParams(
-                new URL(materi.videoUrl).search
+                new URL(materi.videoUrl).search,
               ).get("v");
 
               return (

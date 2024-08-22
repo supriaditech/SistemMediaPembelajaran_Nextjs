@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Button, Input, Option, Select } from "@material-tailwind/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -6,6 +5,7 @@ import { useTambahUser } from "../../../hooks/useTambahUser";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { useState } from "react";
 
 interface ModalAddUserProps {
   token: string;

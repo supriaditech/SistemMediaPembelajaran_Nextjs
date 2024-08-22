@@ -1,6 +1,5 @@
 import Master from "@/components/global/Master";
 import { useRouter } from "next/router";
-import React from "react";
 import { useSoal } from "../../hooks/useSoal";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
@@ -22,7 +21,6 @@ function Soal({ token }: soalProps) {
   const {
     data,
     error,
-    mutate,
     openModal,
     setOpenModal,
     openModalDelete,
@@ -160,7 +158,7 @@ export default Soal;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session: SessionType | null = (await getSession(
-    context
+    context,
   )) as SessionType | null;
 
   if (!session) {
