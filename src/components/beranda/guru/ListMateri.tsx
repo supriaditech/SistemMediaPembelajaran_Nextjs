@@ -26,7 +26,7 @@ function ListMateri({ userType }: listMateriPros) {
   const { data: session } = useSession() as { data: SessionType | null };
   const { modalPhotoProfile, setPhotoProfile } = usePhotoProfile(
     session?.accessToken ?? null,
-    userType,
+    userType
   );
   const token = session?.accessToken || "";
   const {
@@ -73,9 +73,9 @@ function ListMateri({ userType }: listMateriPros) {
       data?.data?.filter(
         (materi: MateriType) =>
           materi.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          materi.content.toLowerCase().includes(searchQuery.toLowerCase()),
+          materi.content.toLowerCase().includes(searchQuery.toLowerCase())
       ),
-    [searchQuery, data],
+    [searchQuery, data]
   );
 
   // Paginasi
@@ -84,7 +84,7 @@ function ListMateri({ userType }: listMateriPros) {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = filteredData?.slice(
     startIndex,
-    startIndex + itemsPerPage,
+    startIndex + itemsPerPage
   );
   const handleEdit = (materi: MateriType) => {
     setSelectedMateri(materi);
@@ -128,7 +128,7 @@ function ListMateri({ userType }: listMateriPros) {
           <div className="grid lg:grid-cols-2 gap-4 ">
             {currentData?.map((materi: MateriType) => {
               const videoId = new URLSearchParams(
-                new URL(materi.videoUrl).search,
+                new URL(materi.videoUrl).search
               ).get("v");
 
               return (
@@ -177,16 +177,16 @@ function ListMateri({ userType }: listMateriPros) {
                               Delete
                             </Button>
                           </div>
-                          <div className="w-full">
-                            <Link
-                              href={`/detail-materi?materi=${materi.id}`}
-                              className="bg-black  py-2 rounded-md w-full text-white block text-center hover:bg-gray-800"
-                            >
-                              Detail Materi
-                            </Link>
-                          </div>
                         </>
                       )}
+                      <div className="w-full">
+                        <Link
+                          href={`/detail-materi?materi=${materi.id}`}
+                          className="bg-black  py-2 rounded-md w-full text-white block text-center hover:bg-gray-800"
+                        >
+                          Detail Materi
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
