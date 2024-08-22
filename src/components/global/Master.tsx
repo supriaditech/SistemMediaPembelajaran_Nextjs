@@ -16,7 +16,6 @@ const Master: React.FC<MasterProps> = ({ children, title }) => (
     <div className="min-h-screen flex flex-col">
       <StickyNavbar />
       <main className="flex-grow">{children}</main>
-      {/* <Footer showCarRentals={showCarRentals} /> */}
     </div>
     {/* <ToastContainer
         theme="colored"
