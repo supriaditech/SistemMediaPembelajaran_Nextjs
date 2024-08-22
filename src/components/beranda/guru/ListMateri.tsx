@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { SessionType } from "../../../../types/sessionType";
 import { usePhotoProfile } from "../../../../hooks/usePhotoProfile";
 import {
@@ -31,14 +31,11 @@ function ListMateri({ userType }: listMateriPros) {
   const token = session?.accessToken || "";
   const {
     data, // Assumed to be of type ApiResponseMateri
-    error,
-    mutate,
     openModal,
     setOpenModal,
     searchQuery,
     setSearchQuery,
     currentPage,
-    setCurrentPage,
     handlePageChange,
     openModalEdit,
     setOpenModalEdit,
@@ -129,11 +126,7 @@ function ListMateri({ userType }: listMateriPros) {
             </div>
           </div>
           <div className="grid lg:grid-cols-2 gap-4 ">
-            {currentData?.map((materi: MateriType, index: number) => {
-              const isLast = index === (filteredData?.length ?? 0) - 1;
-              const classes = isLast
-                ? "p-4 w-full bg-red-500"
-                : "p-4 border-b border-blue-gray-50 w-full";
+            {currentData?.map((materi: MateriType) => {
               const videoId = new URLSearchParams(
                 new URL(materi.videoUrl).search,
               ).get("v");
