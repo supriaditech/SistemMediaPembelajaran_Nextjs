@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Api from "../service/Api";
 import { toast } from "react-toastify";
-import { useSession, signOut, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
-const usePhotoProfile = (token: any, userType: String) => {
+const usePhotoProfile = (token: any, userType: string) => {
   const [modalPhotoProfile, setPhotoProfile] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { data: session, update } = useSession();
+  const { update } = useSession();
 
   const uploadPhoto = async (userId: number, id: number, photo: File) => {
     const formData = new FormData();

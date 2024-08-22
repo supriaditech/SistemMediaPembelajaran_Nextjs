@@ -14,7 +14,7 @@ function FormInputComponent() {
       >
         <Input
           {...register("userId", { required: "User ID is required" })}
-          label="Masukan Id Karyawan"
+          label="Masukan Id User"
           error={errors.userId ? true : false}
           className="w-full"
           crossOrigin={undefined}

@@ -25,7 +25,7 @@ interface HomeProps {
   userType: string;
 }
 
-export default function Home({ title, session, token, userType }: HomeProps) {
+export default function Home({ title, token, userType }: HomeProps) {
   const {
     data,
     error,
@@ -41,7 +41,6 @@ export default function Home({ title, session, token, userType }: HomeProps) {
     setOpenModal,
     searchQuery,
     setSearchQuery,
-    filteredData,
     totalPages,
     currentData,
     handlePageChange,
@@ -64,7 +63,7 @@ export default function Home({ title, session, token, userType }: HomeProps) {
       setSelectedUser(user);
       setOpenModalEdit(true);
     } else {
-      console.error("handleEdit called with undefined user");
+      // console.error("handleEdit called with undefined user");
     }
   };
 
@@ -73,7 +72,7 @@ export default function Home({ title, session, token, userType }: HomeProps) {
       setIdUser(id);
       setOpenModalDelete(true);
     } else {
-      console.error("handleDelete called with undefined id");
+      // console.error("handleDelete called with undefined id");
     }
   };
 
@@ -295,10 +294,10 @@ export default function Home({ title, session, token, userType }: HomeProps) {
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async (
-  context
+  context,
 ) => {
   const session: SessionType | null = (await getSession(
-    context
+    context,
   )) as SessionType | null;
 
   if (!session) {
@@ -321,7 +320,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
     title = "Beranda";
   }
 
-  let userType = session?.user?.role;
+  const userType = session?.user?.role;
 
   const token = session?.accessToken;
   return {
